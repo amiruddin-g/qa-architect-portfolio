@@ -7,7 +7,7 @@ def test_valid_login_smoke():
 
 @pytest.mark.regression
 def test_login_with_special_characters():
-    # Regression : login validation with special characters in credentials
+    # Regression check: login validation with special characters in credentials
     pass
 
 @pytest.mark.critical_path
