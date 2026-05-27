@@ -18,6 +18,6 @@ def test_payment_declined_expired_card():
 @pytest.mark.critical_path
 @pytest.mark.slow
 def test_successful_refund():
-    # Critical path: Full refund on a completed transaction
+    # Critical path check: Full refund on a completed transaction
     # verify funds reversal and updated order status.
     pass
