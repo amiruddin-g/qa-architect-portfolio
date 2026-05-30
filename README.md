@@ -16,7 +16,7 @@ My focus is shifting from writing tests to **building the systems that run them*
 |---|---|---|
 | `test-tagging/`       | ✅ Done | pytest markers as multi-dimensional metadata, selective execution via CI marker filters |
 | `docker-test-env/` | ✅ Done | Containerized Python+pytest environment, sibling-module composition, deliberate layer caching |
-| `github-actions-ci/` | ⏳ Planned | Self-triggering pipelines, matrix builds, artifact handling |
+| `github-actions-ci/` | ✅ Done | Manual trigger workflow using GitHub Actions with Docker build and pytest execution |
 | `allure-reporting/` | ⏳ Planned | Rich test reports with history, trends, failure attribution |
 | `quality-gates/` | ⏳ Planned | Coverage thresholds, flake detection, release-blocking criteria |
 | `parallel-execution/` | ⏳ Planned | pytest-xdist scaling, test isolation, runtime optimization |
