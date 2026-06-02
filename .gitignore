@@ -221,3 +221,6 @@ __marimo__/
 .vscode/
 .idea/
 *.swp
+
+#allure results
+allure-results/
