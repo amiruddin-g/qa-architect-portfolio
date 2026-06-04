@@ -41,17 +41,24 @@ To integrate with Docker, we have to make few changes before the run,
 
 ## Report Structure
 Report has 7 sections on the left side 
-1. Overview
+1. **Overview**  
     This will have over all execution details with pass/fail counts
-2. Categories
+
+2. **Categories**  
     Groups failed and broken tests by failure type — distinguishing product defects from test infrastructure issues
-3. Suites
+
+3. **Suites**  
     This section will the test suites, since we don't have any specialized suite, it'll only have tests as a section
-4. Behaviors
-    This section will categorize based on the annotations we have passed which discussed above. Hierarchy of the section is Feature -> Story -> Test
-5. Packages
+
+4. **Behaviors**  
+    This section will categorize based on the annotations we have passed which discussed above. Hierarchy of the section is 
+    `Feature -> Story -> Test`
+
+5. **Packages**  
     This section organizes the test by packages. Since we have only one package, we'll see only 'tests' section
-6. Graphs
+
+6. **Graphs**  
     Visualizes test distribution by severity, status, and duration — useful for identifying flaky or slow tests
-7. Timeline
+
+7. **Timeline**  
     Show the execution time of each case.
