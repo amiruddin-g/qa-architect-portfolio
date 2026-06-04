@@ -22,9 +22,9 @@ Integration of Allure reporting with various annotations along with docker integ
 ### Local
 
 Once the allure is installed and all annotations are provided to the test, proceed as follows
-1. Run pytest test-tagging/ --alluredir=allure-results in the terminal
+1. Run `pytest test-tagging/ --alluredir=allure-results` in the terminal
     This will create an 'allure-results' folder under your project
-2. Run allure serve allure-results in the terminal.
+2. Run `allure serve allure-results` in the terminal.
     This will open the report in your default browser.
 
 ### Docker
@@ -33,10 +33,10 @@ Note: Make sure Docker Desktop is running in the background before the execution
 
 To integrate with Docker, we have to make few changes before the run,
 1. In Dockerfile, add "--alluredir=allure-results" under CMD as below and save
-    CMD ["pytest", "--alluredir=allure-results"]
-2. Then run "docker build -f docker-test-env/Dockerfile -t qa-test-tagging:latest . " in the terminal to build the image
-3. Finally, run "docker run --rm -v <your-repo-root>\allure-results:/app/allure-results qa-test-tagging:latest" to run it in docker.
-    Example : docker run --rm -v F:\QA_Architect\qa-architect-portfolio\allure-results:/app/allure-results qa-test-tagging:latest
+    `CMD ["pytest", "--alluredir=allure-results"]`
+2. Then run `docker build -f docker-test-env/Dockerfile -t qa-test-tagging:latest .` in the terminal to build the image. (the dot at the end is must)
+3. Finally, run `docker run --rm -v <your-repo-root>\allure-results:/app/allure-results qa-test-tagging:latest` to run it in docker.
+    Example : `docker run --rm -v F:\QA_Architect\qa-architect-portfolio\allure-results:/app/allure-results qa-test-tagging:latest`
 
 
 ## Report Structure
