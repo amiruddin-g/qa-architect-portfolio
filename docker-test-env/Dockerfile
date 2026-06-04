@@ -20,4 +20,4 @@ COPY test-tagging/pytest.ini .
 
 # Default command when a container starts from this image.
 # Format: JSON array, ["program", "arg1", "arg2"]
-CMD ["pytest"]
+CMD ["pytest", "--alluredir=allure-results"]
