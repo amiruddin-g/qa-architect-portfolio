@@ -4,6 +4,7 @@ FROM python:3.13-slim
 
 # Working directory inside the image. All subsequent commands run from here.
 WORKDIR /app
+ENV PYTHONPATH=/app
 
 # Copy the dependency file first — this enables Docker layer caching for the
 # slow pip install step, so it only re-runs when requirements actually change.
@@ -15,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the test code into the image. This is done AFTER pip install so code
 # changes don't invalidate the dependency cache layer.
-COPY test-tagging/tests/ ./tests/
+COPY test-tagging/tests/ ./test-tagging/tests/
 COPY pyproject.toml .
 
 # Default command when a container starts from this image.

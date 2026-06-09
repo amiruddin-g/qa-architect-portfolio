@@ -12,3 +12,7 @@ markers = [
     "critical_path: failure blocks release regardless of speed",
     "slow: excluded from PR builds, runs in nightly pipelines",
 ]
+
+[tool.coverage.run]
+source = ["test-tagging/tests"]
+concurrency = ["thread"]
