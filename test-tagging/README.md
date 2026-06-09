@@ -45,14 +45,14 @@ pytest -m "regression and not slow"
 
 ## Files
 
-- `tests/test_login.py` — login flow tests demonstrating marker stacking
-- `tests/test_payment.py` — _(coming next)_ payment flow tests
-- `tests/test_search.py` — _(coming next)_ search functionality tests
-- `pytest.ini` — marker registration (prevents silent typos in marker names)
+- `tests/test_login.py` — login flow tests: valid credentials, special character handling, post-password-reset login
+- `tests/test_payment.py` — payment flow tests: successful payment, expired card decline, refund validation
+- `tests/test_search.py` — search tests: successful search, special character handling, multi-parameter search
+- `pyproject.toml` — marker registration under `[tool.pytest.ini_options]`
 
 ## Why marker registration matters
 
-The `pytest.ini` file declares each marker name explicitly. Without this, `@pytest.mark.smoek` (typo) silently creates a *new* marker called `smoek` that no CI job ever runs — a classic silent failure. With registered markers and `--strict-markers` (planned), pytest hard-fails on unknown markers, surfacing the typo immediately.
+The `pyproject.toml` file declares each marker name explicitly under `[tool.pytest.ini_options]`. Without this, `@pytest.mark.smoek` (typo) silently creates a *new* marker called `smoek` that no CI job ever runs — a classic silent failure. With registered markers and `--strict-markers` enabled, pytest hard-fails on unknown markers, surfacing the typo immediately.
 
 This is a recurring pattern in test infrastructure: catch silent failures early. Most production issues in test suites aren't dramatic — they're quiet drift where the right tests stopped running and nobody noticed.
 

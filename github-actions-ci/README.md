@@ -1,34 +1,46 @@
 # GitHub Actions CI
 
-GitHub Actions integration for Continuous Integration and execution of workflows.
-This workflow uses workflow_dispatch (manual trigger) in Docker for the pytest test cases. 
+Demonstrates a CI pipeline that builds and runs the containerized test suite on a GitHub-hosted runner — verifying that the Docker image builds cleanly and all tests pass in a completely fresh environment.
 
-## How to Trigger
+## The problem this solves
 
-- Navigate to your GitHub repo in browser, open Actions.
-- A workflow named CI will be on the left.
-- Open it and click 'Run workflow'.
-- It should follow the steps in your yml file and produce output if success and error if failed.
+Local Docker removes "works on my machine" for individual developers. CI removes it for the team. A test suite that only runs on someone's laptop is not a quality signal — it's a personal check. GitHub Actions makes the pipeline the source of truth: the same image, built from scratch on a clean Ubuntu runner, with no dependency on any local setup.
 
 ## What the workflow does
 
-- Workflow checkout the code, means clones the repo on the GitHub-hosted Ubuntu runner.
-- Build the docker image.
-- Runs 9 pytest tests inside the container.
+Three steps, in order:
 
-All happens within GitHub servers while local Docker setup left untouched.
+1. **Checkout** — clones the repo onto the GitHub-hosted Ubuntu runner via `actions/checkout@v4`
+2. **Build** — builds the Docker image from `docker-test-env/Dockerfile` using the repo root as build context
+3. **Run** — executes all 9 pytest tests inside the container; a non-zero exit code fails the workflow
 
-## Local Docker vs GitHub Actions Docker
+The entire run happens on GitHub's infrastructure. Local Docker is never touched.
 
-### Local Docker (your machine):
+## Design decisions
 
-- Local setup gives faster feedback, test before push.
-- Faster debug without waiting for CI to complete.
-- Dockerfile verification before committing.
+**`workflow_dispatch` trigger.** Manual trigger only — intentional for a portfolio. A push or PR trigger would fire on every commit while the module is under active development, generating noise. `workflow_dispatch` keeps the signal clean: the pipeline runs when explicitly invoked, not on every work-in-progress commit.
 
+**No separate test environment setup.** The workflow does not install Python, create a venv, or manage dependencies directly. All of that lives inside the Dockerfile. The CI job is three lines because the container encapsulates the environment — this is the payoff of the `docker-test-env/` module.
 
-### GitHub Actions Docker:
+**`ubuntu-latest` runner.** GitHub-hosted, no self-hosted runner configuration required. Matches the Linux environment inside the container, so there are no OS-level surprises between the runner and the container.
 
-- Can be triggered from anywhere, no machine dependency.
-- Runs automatically on every actions specified (Push/PR) or manually.
-- Team can be assured that it works for all and not just on their machine.
+**Exit code as the quality signal.** `docker run --rm` returns pytest's exit code directly to the runner. If any test fails, the container exits non-zero, the workflow step fails, and the run is marked failed. No parsing, no post-processing — the signal is clean by construction.
+
+## Workflow file
+
+`.github/workflows/ci.yml` — the complete pipeline definition. Three steps, no matrix, no artifacts. Deliberately minimal: the complexity lives in the container, not the workflow.
+
+## How to trigger
+
+Navigate to **Actions → CI → Run workflow** in the GitHub UI.
+
+## Connection to other modules
+
+This pipeline is the integration point for the entire portfolio:
+- Builds the image defined in `docker-test-env/`
+- Runs the tests and markers defined in `test-tagging/`
+- Allure reporting can be extracted via volume mount if added to the run step
+
+---
+
+*Part of [qa-architect-portfolio](../). Previous module: [docker-test-env](../docker-test-env/). Next module: quality-gates.*

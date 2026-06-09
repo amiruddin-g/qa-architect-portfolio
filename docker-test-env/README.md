@@ -49,9 +49,11 @@ The trailing `.` is the build context — the repo root, so the Dockerfile can r
 
 **`CMD ["pytest"]` in array form.** The JSON array form (not the shell form) ensures the container handles signals correctly — `Ctrl+C` propagates cleanly to pytest, exit codes are preserved, and the container terminates on the actual test process rather than a wrapping shell.
 
+**`pyproject.toml` copied from repo root.** pytest configuration — marker registration, `--strict-markers` — lives in `pyproject.toml` at the repo root rather than a module-level `pytest.ini`. Copying it into the container ensures the same marker definitions and strictness settings apply inside Docker as they do locally.
+
 ## What's next
 
-This image is the foundation for the upcoming GitHub Actions CI module — the CI pipeline will build this exact Dockerfile and run the container as the test job, ensuring local and CI environments are identical by construction.
+This image is the foundation for the CI pipeline in [`github-actions-ci/`](../github-actions-ci/) — the workflow builds this exact Dockerfile and runs the container as the test job, ensuring local and CI environments are identical by construction. The same pattern carries forward into the upcoming `quality-gates/` module, where coverage thresholds and release-blocking criteria run inside this same container.
 
 ---
 

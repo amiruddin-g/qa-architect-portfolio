@@ -1,64 +1,65 @@
 # Allure Reporting
 
-Allure is a reporting framework built on java. Provides a pre-built structured report of the execution based on the annotations provided in the code.
+Demonstrates how to produce stakeholder-readable test reports from a pytest suite — reports that communicate test intent, failure context, and business impact without requiring access to CI logs.
 
-## Purpose
+## The problem this solves
 
-To provide stakeholder-readable test reports without requiring access to CI logs.
+A passing CI pipeline is not the same as a trustworthy one. Most test output — pytest's terminal output, raw JUnit XML — is written for developers debugging a failure, not for stakeholders deciding whether to ship.
 
-## What This Module Demonstrates
+Allure bridges that gap. By annotating tests with feature, story, severity, and step metadata, the report communicates *what was tested and why it matters*, not just *which file failed on which line*.
 
-Integration of Allure reporting with various annotations along with docker integration.
+## Annotation design
 
-## Annotations Used
+Four annotations, each adding a distinct layer of context to the report:
 
-@allure.feature     - Maps tests to a functional area of the product 
-@allure.story       - Maps tests to a specific user scenario within that feature
-@allure.severity    - Signals business impact of a failure
-@allure.step        - Exposes internal test actions in the report without adding logging code
+| Annotation | What it communicates |
+|---|---|
+| `@allure.feature` | Which functional area of the product this test covers |
+| `@allure.story` | The specific user scenario being validated |
+| `@allure.severity` | Business impact of a failure — CRITICAL, NORMAL, MINOR |
+| `@allure.step` | Internal test actions exposed in the report without adding logging code |
 
-## How to Run
+The hierarchy in the Behaviors section of the report follows: `Feature → Story → Test`. A stakeholder can navigate directly to "Payment → Refund validation" without reading test code.
+
+## How to run
 
 ### Local
 
-Once the allure is installed and all annotations are provided to the test, proceed as follows
-1. Run `pytest test-tagging/ --alluredir=allure-results` in the terminal
-    This will create an 'allure-results' folder under your project
-2. Run `allure serve allure-results` in the terminal.
-    This will open the report in your default browser.
+```bash
+pytest test-tagging/ --alluredir=allure-results
+allure serve allure-results
+```
+
+This generates raw result files in `allure-results/` and opens the report in your default browser.
 
 ### Docker
 
-Note: Make sure Docker Desktop is running in the background before the execution
+Make sure Docker Desktop is running, then:
 
-To integrate with Docker, we have to make few changes before the run,
-1. In Dockerfile, add "--alluredir=allure-results" under CMD as below and save
-    `CMD ["pytest", "--alluredir=allure-results"]`
-2. Then run `docker build -f docker-test-env/Dockerfile -t qa-test-tagging:latest .` in the terminal to build the image. (the dot at the end is must)
-3. Finally, run `docker run --rm -v <your-repo-root>\allure-results:/app/allure-results qa-test-tagging:latest` to run it in docker.
-    Example : `docker run --rm -v F:\QA_Architect\qa-architect-portfolio\allure-results:/app/allure-results qa-test-tagging:latest`
+```bash
+# Build the image
+docker build -f docker-test-env/Dockerfile -t qa-test-tagging:latest .
 
+# Run with volume mount to extract results
+docker run --rm -v <your-repo-root>\allure-results:/app/allure-results qa-test-tagging:latest
 
-## Report Structure
-Report has 7 sections on the left side 
-1. **Overview**  
-    This will have over all execution details with pass/fail counts
+# Serve the report locally
+allure serve allure-results
+```
 
-2. **Categories**  
-    Groups failed and broken tests by failure type — distinguishing product defects from test infrastructure issues
+The `--alluredir=allure-results` flag is baked into the Dockerfile. The volume mount extracts results from the container to your local machine so `allure serve` can read them.
 
-3. **Suites**  
-    This section will the test suites, since we don't have any specialized suite, it'll only have tests as a section
+## Files
 
-4. **Behaviors**  
-    This section will categorize based on the annotations we have passed which discussed above. Hierarchy of the section is 
-    `Feature -> Story -> Test`
+- `test-tagging/tests/test_login.py` — login flow tests with feature, story, severity, and step annotations
+- `test-tagging/tests/test_payment.py` — payment flow tests including refund and declined card scenarios
+- `test-tagging/tests/test_search.py` — search tests including special character and multi-parameter scenarios
+- `docker-test-env/Dockerfile` — container with `--alluredir` baked into CMD
 
-5. **Packages**  
-    This section organizes the test by packages. Since we have only one package, we'll see only 'tests' section
+## Tradeoffs
 
-6. **Graphs**  
-    Visualizes test distribution by severity, status, and duration — useful for identifying flaky or slow tests
+Allure annotations are test-framework-specific. A test annotated with `@allure.feature` is coupled to Allure — switching reporting tools means revisiting every annotation. For a portfolio demonstrating infrastructure decisions, that tradeoff is acceptable. In a production codebase, the annotation overhead should be weighed against the reporting value for your specific stakeholders.
 
-7. **Timeline**  
-    Show the execution time of each case.
+---
+
+*Part of [qa-architect-portfolio](../). Next module: quality gates.*
