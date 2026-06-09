@@ -16,9 +16,9 @@ My focus is shifting from writing tests to **building the systems that run them*
 |---|---|---|
 | `test-tagging/`       | ✅ Done | pytest markers as multi-dimensional metadata, selective execution via CI marker filters |
 | `docker-test-env/` | ✅ Done | Containerized Python+pytest environment, sibling-module composition, deliberate layer caching |
-| `allure-reporting/` | ✅ Done | Allure annotations (feature, story, severity, step), local and Docker-integrated report generation |
 | `github-actions-ci/` | ✅ Done | CI pipeline using GitHub Actions with Docker build and pytest execution |
-| `quality-gates/` | ⏳ Planned | Coverage thresholds, flake detection, release-blocking criteria |
+| `allure-reporting/` | ✅ Done | Allure annotations (feature, story, severity, step), local and Docker-integrated report generation |
+| `quality-gates/` | ✅ Done | Coverage threshold enforcement, pytest-cov integration, CI-blocking quality gate |
 | `parallel-execution/` | ⏳ Planned | pytest-xdist scaling, test isolation, runtime optimization |
 
 Each module includes runnable code, a focused README explaining the pattern, and notes on tradeoffs I encountered.
@@ -32,11 +32,11 @@ The work I want to do — and the work this repo demonstrates — is closing tha
 ## Tech stack
 
 - **Languages:** Python (primary), Java
-- **Test frameworks:** pytest, Selenium, Playwright (learning)
-- **CI/CD:** GitHub Actions, Jenkins
-- **Containers:** Docker, Docker Compose
+- **Test frameworks:** pytest, Selenium
+- **CI/CD:** GitHub Actions
+- **Containers:** Docker
 - **Reporting:** Allure
-- **Parallel execution:** pytest-xdist
+- **Parallel execution:** pytest-xdist (upcoming)
 
 ## Background
 
