@@ -19,7 +19,7 @@ My focus is shifting from writing tests to **building the systems that run them*
 | `github-actions-ci/` | ✅ Done | CI pipeline using GitHub Actions with Docker build and pytest execution |
 | `allure-reporting/` | ✅ Done | Allure annotations (feature, story, severity, step), local and Docker-integrated report generation |
 | `quality-gates/` | ✅ Done | Coverage threshold enforcement, pytest-cov integration, CI-blocking quality gate |
-| `parallel-execution/` | ⏳ Planned | pytest-xdist scaling, test isolation, runtime optimization |
+| `parallel-execution/` | ✅ Done | Worker-based parallelism, execution overhead tradeoffs, shared state isolation pitfalls |
 
 Each module includes runnable code, a focused README explaining the pattern, and notes on tradeoffs I encountered.
 
@@ -36,7 +36,7 @@ The work I want to do — and the work this repo demonstrates — is closing tha
 - **CI/CD:** GitHub Actions
 - **Containers:** Docker
 - **Reporting:** Allure
-- **Parallel execution:** pytest-xdist (upcoming)
+- **Parallel execution:** pytest-xdist
 
 ## Background
 
